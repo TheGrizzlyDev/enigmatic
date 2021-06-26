@@ -1,0 +1,20 @@
+using 🔥, ✨, 💩, 👽️
+
+rotors = [
+    rotor(🔥 => 💩, ✨ => 🔥, 💩 => 👽️, 👽️ => ✨) starting at 🔥
+    rotor(🔥 => 🔥, ✨ => 👽️, 💩 => ✨, 👽️ => 💩) starting at ✨
+]
+
+plugboard = plugboard(🔥 <=> 👽️, ✨ <=> 💩)
+
+run {
+    key = in
+
+    for rotor <- rotors {
+        key = rotor <- key
+        rotor.step()
+    }
+
+    res = plugboard <- key
+    out <- res
+}

@@ -1,24 +1,9 @@
+const fs = require('fs')
 const tokenizer = require('./lexer')
 
 test('Can generate the correct token sequence', () => {
-    tokens = tokenizer(`
-    using 🔥, ✨, 💩, 👽️
-
-    rotors = [
-        rotor(🔥 => 💩, ✨ => 🔥, 💩 => 👽️, 👽️ => ✨) starting at 🔥
-        rotor(🔥 => 🔥, ✨ => 👽️, 💩 => ✨, 👽️ => 💩) starting at ✨
-    ]
-    
-    plugboard = plugboard(🔥 <=> 👽️, ✨ <=> 💩)
-    
-    run key <- input {
-        for rotor <- rotors {
-            key = rotor <- key
-            rotor.step()
-        }
-    
-        output <- plugboard <- key
-    }`.trim())
+    const code = fs.readFileSync('src/enigmascript/testdata/simple.enigmascript', 'utf8')
+    tokens = tokenizer(code)
 
     expect(tokens.shift()).toMatchObject({
         type: 'using',
@@ -87,21 +72,21 @@ test('Can generate the correct token sequence', () => {
     })
 
     expect(tokens.shift()).toMatchObject({
+        type: 'scope_start'
+    })
+
+    expect(tokens.shift()).toMatchObject({
         type: 'id',
         value: 'key'
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'feed'
+        type: 'assignment'
     })
 
     expect(tokens.shift()).toMatchObject({
         type: 'id',
-        value: 'input'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'scope_start'
+        value: 'in'
     })
 
     expect(tokens.shift()).toMatchObject({
@@ -177,11 +162,11 @@ test('Can generate the correct token sequence', () => {
 
     expect(tokens.shift()).toMatchObject({
         type: 'id',
-        value: 'output'
+        value: 'res'
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'feed'
+        type: 'assignment'
     })
 
     expect(tokens.shift()).toMatchObject({
@@ -196,6 +181,20 @@ test('Can generate the correct token sequence', () => {
     expect(tokens.shift()).toMatchObject({
         type: 'id',
         value: 'key'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'id',
+        value: 'out'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'feed'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'id',
+        value: 'res'
     })
 
     expect(tokens.shift()).toMatchObject({
