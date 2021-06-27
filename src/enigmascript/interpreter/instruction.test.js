@@ -87,6 +87,35 @@ test("Invocation can invoke a method and assign the result", () => {
     expect(victim.scope[varName]).toEqual(expectedValue)
 })
 
+test("Invocation can invoke a method and assign the result", () => {
+    const varName = 'test'
+    const originalValue = 41
+    const expectedValue = 42
+    const victim = new TestInstruction({
+        type: 'assign',
+        to: varName,
+        value: {
+            type: 'feed',
+            to: 'plus_one',
+            value: {
+                type: 'id',
+                value: 'originalValue'
+            }
+        }
+    }, {
+        originalValue,
+        plus_one: {
+            operator_feed(value) {
+                return value + 1
+            }
+        }
+    })
+
+    victim.execute()
+
+    expect(victim.scope[varName]).toEqual(expectedValue)
+})
+
 test("Consecutive assignments", () => {
     const firstVarName = 'test_0'
     const secondVarName = 'test_1'

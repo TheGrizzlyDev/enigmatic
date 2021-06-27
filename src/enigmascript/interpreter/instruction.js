@@ -16,6 +16,17 @@ class Instruction {
         return this.get(this.astNode.to)()
     }
 
+    feed() {
+        const valueNode = this.astNode.value
+        const value = valueNode.type === 'id' ? 
+            this.get(valueNode.value)
+            : this.createInstruction(valueNode).execute();
+        const scope = this.get(this.astNode.to)
+        const operator = this.get('operator_feed', scope)
+
+        return operator(value)
+    }
+
     assign() {
         const valueNode = this.astNode.value
         const value = valueNode.type === 'id' ? 
