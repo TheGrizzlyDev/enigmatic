@@ -13,7 +13,6 @@ test('Can setup an enigma-machine without any state', () => {
         alphabet: ['🔥', '✨', '💩', '👽️'],
         rotors: [
             {
-                id: 'r_0',
                 position: '🔥',
                 wiring: [
                     ['🔥', '💩'], 
@@ -23,7 +22,6 @@ test('Can setup an enigma-machine without any state', () => {
                 ]
             },
             {
-                id: 'r_1',
                 position: '✨',
                 wiring: [
                     ['🔥', '🔥'], 
@@ -33,11 +31,8 @@ test('Can setup an enigma-machine without any state', () => {
                 ]
             }
         ],
-        plugboards: [
-            {
-                id: 'p_0',
-                value: [['🔥', '👽️'], ['✨', '💩']]
-            }
-        ]
+        plugboard: {
+            value: [['🔥', '👽️'], ['✨', '💩']]
+        }
     })
 })

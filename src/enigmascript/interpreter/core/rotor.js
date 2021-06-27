@@ -4,7 +4,7 @@ class Rotor {
         this.wiring = wiring
     }
 
-    operator_feed(value) {
+    feed(value) {
         for(let [l, r] of this.wiring) {
             if (value === l) return r
         }

@@ -1,55 +1,48 @@
 const Instruction = require('./instruction.js')
+const Rotors = require('./core/rotors')
 
 class Interpreter {
     constructor(ast) {
         this.ast = ast
         this.state = {}
         this.global = {}
-        this.rotors = {}
-        this.plugboards = {}
     }
 
     init() {
-        let rotorId = 0, plugboardId = 0;
+        const emittedRotors = []
+        const emittedPlugboards = []
         const emit = (action, ...args) => {
             switch(action) {
                 case 'rotor':
                     const rotor = args[0]
                     if (rotor == null) throw new Error(`Cannot emit rotors if a rotor is null`)
-                    this.rotors[`r_${rotorId++}`] = rotor
+                    emittedRotors.push(rotor)
                     break
                 case 'plugboard':
                     const plugboard = args[0]
                     if (plugboard == null) throw new Error(`Cannot emit plugboard if a plugboard is null`)
-                    this.plugboards[`p_${plugboardId++}`] = plugboard
+                    emittedPlugboards.push(plugboard)
                     break
                 default:
                     throw new Error(`action ${action} cannot be emitted`)
             }
         }
 
-        const alphabet = this.ast.setup.alphabet 
+        this.alphabet = this.ast.setup.alphabet 
 
         for(let instruction of this.ast.setup.instructions) {
             new Instruction(instruction, this.global, this.get, this.set, emit).execute()
         }
 
-        const rotors = Object.entries(this.rotors).map(([id, {start, wiring}]) => ({
-            id,
-            wiring,
-            position: start,
-        }))
+        const plugboard = (emittedPlugboards && emittedPlugboards.length === 1) && emittedPlugboards[0]
+        if (! plugboard) throw new Error("Exactly a single plugboard must be declared for an enigma machine") 
 
-        const plugboards = Object.entries(this.plugboards).map(([id, {value}]) => ({
-            id,
-            value
-        }))
-
-        this.state = { alphabet, plugboards, rotors }
+        this.set('plugboard', plugboard)
+        this.set('rotors', new Rotors(this.alphabet, ...emittedRotors))
     }
 
     run(input) {
-        return [this.state, []]
+        return [this.computeCurrentState(), []]
     }
 
     set(id, value, root = global) {
@@ -58,6 +51,17 @@ class Interpreter {
 
     get(id, root = global) {
         return root[id]
+    }
+
+    computeCurrentState() {
+        return {
+            alphabet: this.alphabet,
+            plugboard: {
+                value: this.get('plugboard').value
+            },
+            rotors: this.get('rotors').rotorsWithState()
+                .map(({position, wiring}) => ({ position, wiring }))
+        }
     }
 }
 
