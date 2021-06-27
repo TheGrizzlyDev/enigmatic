@@ -3,7 +3,7 @@ const tokenizer = require('./lexer')
 const astBuilder = require('./ast-builder')
 
 function dump(ast, testCase) {
-    if (! process.env.DUMP) return 
+    if (!process.env.DUMP) return
     fs.writeFileSync(testCase + ".dump.json", JSON.stringify(ast, null, 2))
 }
 
@@ -16,108 +16,110 @@ test('Can generate the correct token sequence', () => {
     dump(ast, "simple")
     expect(errors).toHaveLength(0)
     expect(ast).toMatchObject({
-        type: 'program',
-        setup: {
-            alphabet: ['🔥', '✨', '💩', '👽️'],
-            instructions: [
+        "type": "program",
+        "setup": {
+            "alphabet": [
+                "🔥",
+                "✨",
+                "💩",
+                "👽️"
+            ],
+            "instructions": [
                 {
-                    type: 'assign',
-                    to: 'rotors',
-                    value: {
-                        type: 'array',
-                        value: [
-                            {
-                                type: 'rotor',
-                                value: {
-                                    start: '🔥',
-                                    wiring: [
-                                        ['🔥', '💩'], 
-                                        ['✨', '🔥'], 
-                                        ['💩', '👽️'], 
-                                        ['👽️', '✨']
-                                    ]
-                                }
-                            },
-                            {
-                                type: 'rotor',
-                                value: {
-                                    start: '✨',
-                                    wiring: [
-                                        ['🔥', '🔥'], 
-                                        ['✨', '👽️'], 
-                                        ['💩', '✨'], 
-                                        ['👽️', '💩']
-                                    ]
-                                }
-                            }
+                    "type": "rotor",
+                    "value": {
+                        "start": "🔥",
+                        "wiring": [
+                            [
+                                "🔥",
+                                "💩"
+                            ],
+                            [
+                                "✨",
+                                "🔥"
+                            ],
+                            [
+                                "💩",
+                                "👽️"
+                            ],
+                            [
+                                "👽️",
+                                "✨"
+                            ]
                         ]
                     }
                 },
                 {
-                    type: 'assign',
-                    to: 'plugboard',
-                    value: {
-                        type: 'plugboard',
-                        value: [['🔥', '👽️'], ['✨', '💩']]
+                    "type": "rotor",
+                    "value": {
+                        "start": "✨",
+                        "wiring": [
+                            [
+                                "🔥",
+                                "🔥"
+                            ],
+                            [
+                                "✨",
+                                "👽️"
+                            ],
+                            [
+                                "💩",
+                                "✨"
+                            ],
+                            [
+                                "👽️",
+                                "💩"
+                            ]
+                        ]
                     }
+                },
+                {
+                    "type": "plugboard",
+                    "value": [
+                        [
+                            "🔥",
+                            "👽️"
+                        ],
+                        [
+                            "✨",
+                            "💩"
+                        ]
+                    ]
                 }
             ]
         },
-        run: {
-            instructions: [
+        "run": {
+            "instructions": [
                 {
-                    type: 'assign',
-                    to: 'key',
-                    value: {
-                        type: 'id',
-                        value: 'in'
-                    }
-                },
-                {
-                    type: 'for',
-                    item: 'rotor',
-                    over: 'rotors',
-                    instructions: [
-                        {
-                            type: 'assign',
-                            to: 'key',
-                            value: {
-                                type: 'feed',
-                                to: 'rotor',
-                                value: {
-                                    type: 'id',
-                                    value: 'key'
-                                }
+                    "type": "assign",
+                    "to": "res",
+                    "value": {
+                        "type": "feed",
+                        "to": "plugboard",
+                        "value": {
+                            "type": "feed",
+                            "to": "rotors",
+                            "value": {
+                                "type": "id",
+                                "value": "in"
                             }
-                        },
-                        {
-                            type: "accessor",
-                            to: "rotor",
-                            access: {
-                                to: "step",
-                                type: "invocation"
-                            }
-                        }
-                    ]
-                },
-                {
-                    type: 'assign',
-                    to: 'res',
-                    value: {
-                        to: 'plugboard',
-                        type: 'feed',
-                        value: {
-                            type: 'id',
-                            value: 'key'
                         }
                     }
                 },
                 {
-                    type: 'feed',
-                    to: 'out',
-                    value: {
-                        type: 'id',
-                        value: 'res'
+                    "type": "accessor",
+                    "to": "rotors",
+                    "access": {
+                        "type": "invocation",
+                        "to": "step"
+                    }
+                },
+                {
+                    "type": "feed",
+                    "to": "out",
+                    "value": {
+                        "type": "id",
+                        "value": "res"
                     }
                 }
             ]

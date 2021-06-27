@@ -183,7 +183,11 @@ module.exports = function(tokens) {
     const instructions = { rotor, plugboard }
     
     function assinableOp() {
-        const token = current()
+        
+    }
+    
+    function assignment() {
+        const token = next()
         const opType = token.type
     
         if (opType == 'id') {
@@ -201,113 +205,11 @@ module.exports = function(tokens) {
         return op()
     }
     
-    function* array() {
-        while(! isTokenOrEOF('array_end')) {
-            yield assinableOp()
-        }
-    }
-    
-    function assignment() {
-        const token = next()
-        if (token.type == 'array_start') {
-            return {
-                type: 'array',
-                value: [...array()]
-            }
-        }
-        return assinableOp()
-    }
-    
     function feed() {
-        next()
-        return assinableOp()
+        return assignment()
     }
     
-    function forloop() {
-        const item = ((token) => {
-            if (token.type !== 'id') {
-                e(`
-                Expected an identifier to label the item of each iteration
-                
-                ie:
-                for 'item' <- list {
-                    
-                }
-                `)
-                return
-            }
-            return token.value
-        })(next())
-    
-        if (! item) {
-            return
-        }
-    
-        if (next().type !== 'feed') {
-            e(`
-            Expected a '<-' operator after this identifier
-            
-            ie:
-            for item '<-' list {
-                
-            }
-            `)
-            return
-        }
-        const over = ((token) => {
-            if (token.type !== 'id') {
-                e(`
-                Expected an identifier to iterate over
-                
-                ie:
-                for item <- 'list' {
-                    
-                }
-                `)
-                return
-            }
-            return token.value
-        })(next())
-    
-        const scopeStartTokenType = next().type
-        if (scopeStartTokenType !== 'scope_start') {
-            e(`
-            Expecting a code-block after for,
-            instead found: ${scopeStartTokenType}
-    
-            ie: 
-            for item <- list '{'
-                    
-            }
-            `)
-            return
-        }
-    
-        const instructions = block()
-    
-        const scopeEndTokenType = current().type
-        if (scopeEndTokenType !== 'scope_end') {
-            e(`
-            Expecting a code-block after for,
-            instead found: ${scopeEndTokenType}
-    
-            ie: 
-            for item <- list {
-                    
-            '}'
-            `)
-            return
-        }
-        
-        return {
-            type: 'for',
-            item,
-            over,
-            instructions
-        }
-    }
-    
-    const supportedCodeBlockInstructions = { id, for: forloop }
+    const supportedCodeBlockInstructions = { id }
     function block() {
         const instructions = []
         while (! isTokenOrEOF('scope_end')) {
@@ -336,14 +238,19 @@ module.exports = function(tokens) {
         state().alphabet = alphabet
         const instructions = []
         while(! isTokenOrEOF('run')) {
-            if (current().type !== 'id') {
-                e`
-                Expressions in the setup block must be assigned to an identifier to be valid
-                `
-                continue
+            const tokenType = current().type
+            switch(tokenType) {
+                case 'rotor':
+                    instructions.push(rotor())
+                    break
+                case 'plugboard':
+                    instructions.push(plugboard())
+                    break
+                default:
+                     e(`
+                    Expressions in the setup block must be either rotor or plugboard, instead got: ${tokenType}
+                    `)
             }
-    
-            instructions.push(id())
         }
         return {
             alphabet,
@@ -398,7 +305,6 @@ module.exports = function(tokens) {
             `
         }
     
-        // setup run block
         if (current().type == 'run') {
             parserState.phase = 'run'
             ast.run = run()

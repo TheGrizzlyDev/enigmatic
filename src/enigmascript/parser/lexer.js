@@ -25,24 +25,12 @@ lexer.rule(/run/, (ctx, match) => {
     ctx.accept("run")
 })
 
-lexer.rule(/for/, (ctx, match) => {
-    ctx.accept("for")
-})
-
 lexer.rule(/[a-zA-Z_][a-zA-Z0-9_]*/, (ctx, match) => {
     ctx.accept("id")
 })
 
 lexer.rule(/=/, (ctx, match) => {
     ctx.accept("assignment")
-})
-
-lexer.rule(/\[/, (ctx, match) => {
-    ctx.accept("array_start")
-})
-
-lexer.rule(/\]/, (ctx, match) => {
-    ctx.accept("array_end")
 })
 
 lexer.rule(/\{/, (ctx, match) => {

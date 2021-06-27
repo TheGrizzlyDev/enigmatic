@@ -1,20 +1,12 @@
 using 🔥, ✨, 💩, 👽️
 
-rotors = [
-    rotor(🔥 => 💩, ✨ => 🔥, 💩 => 👽️, 👽️ => ✨) starting at 🔥
-    rotor(🔥 => 🔥, ✨ => 👽️, 💩 => ✨, 👽️ => 💩) starting at ✨
-]
+rotor(🔥 => 💩, ✨ => 🔥, 💩 => 👽️, 👽️ => ✨) starting at 🔥
+rotor(🔥 => 🔥, ✨ => 👽️, 💩 => ✨, 👽️ => 💩) starting at ✨
 
-plugboard = plugboard(🔥 <=> 👽️, ✨ <=> 💩)
+plugboard(🔥 <=> 👽️, ✨ <=> 💩)
 
 run {
-    key = in
-
-    for rotor <- rotors {
-        key = rotor <- key
-        rotor.step()
-    }
-
-    res = plugboard <- key
+    res = plugboard <- rotors <- in
+    rotors.step()
     out <- res
 }

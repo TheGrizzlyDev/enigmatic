@@ -11,19 +11,6 @@ test('Can generate the correct token sequence', () => {
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'rotors'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'assignment'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'array_start'
-    })
-
-    expect(tokens.shift()).toMatchObject({
         type: 'rotor',
         value: {
             start: '🔥',
@@ -50,19 +37,6 @@ test('Can generate the correct token sequence', () => {
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'array_end'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'plugboard'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'assignment'
-    })
-
-    expect(tokens.shift()).toMatchObject({
         type: 'plugboard',
         value: [['🔥', '👽️'], ['✨', '💩']]
     })
@@ -74,97 +48,12 @@ test('Can generate the correct token sequence', () => {
     expect(tokens.shift()).toMatchObject({
         type: 'scope_start'
     })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'key'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'assignment'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'in'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'for'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'rotor'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'feed'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'rotors'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'scope_start'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'key'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'assignment'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'rotor'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'feed'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'key'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'rotor'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'accessor',
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'id',
-        value: 'step'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'tuple_start'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'tuple_end'
-    })
-
-    expect(tokens.shift()).toMatchObject({
-        type: 'scope_end'
-    })
-
+    
     expect(tokens.shift()).toMatchObject({
         type: 'id',
         value: 'res'
     })
-
+    
     expect(tokens.shift()).toMatchObject({
         type: 'assignment'
     })
@@ -173,14 +62,45 @@ test('Can generate the correct token sequence', () => {
         type: 'id',
         value: 'plugboard'
     })
-
+    
     expect(tokens.shift()).toMatchObject({
-        type: 'feed'
+        type: 'feed',
     })
-
+    
     expect(tokens.shift()).toMatchObject({
         type: 'id',
-        value: 'key'
+        value: 'rotors'
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'feed',
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'id',
+        value: 'in'
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'id',
+        value: 'rotors'
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'accessor',
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'id',
+        value: 'step'
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_start',
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_end',
     })
 
     expect(tokens.shift()).toMatchObject({
