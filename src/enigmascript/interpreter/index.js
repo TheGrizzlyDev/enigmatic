@@ -31,7 +31,7 @@ class Interpreter {
         this.alphabet = this.ast.setup.alphabet 
 
         for(let instruction of this.ast.setup.instructions) {
-            new Instruction(instruction, this.global, this.get, this.set, emit).execute()
+            new Instruction(instruction, this.global, emit).execute()
         }
 
         const plugboard = (emittedPlugboards && emittedPlugboards.length === 1) && emittedPlugboards[0]

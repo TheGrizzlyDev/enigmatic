@@ -2,11 +2,9 @@ const Rotor = require('./core/rotor')
 const Plugboard = require('./core/plugboard')
 
 class Instruction {
-    constructor(astNode, scope, _get, _set, _emit) {
+    constructor(astNode, scope, _emit) {
         this.astNode = astNode
         this._scope = scope
-        this._get = _get
-        this._set = _set
         this._emit = _emit
     }
 
@@ -17,9 +15,21 @@ class Instruction {
     assign() {
         const valueNode = this.astNode.value
         const value = valueNode.type === 'id' ? 
-            this.getInScope(valueNode.value)
+            this.get(valueNode.value)
             : this.createInstruction(valueNode).execute();
-        this.setInScope(this.astNode.to, value)
+        this.set(this.astNode.to, value)
+        return value
+    }
+
+    accessor() {
+        const valueNode = this.astNode.access
+        const scope = this.get(this.astNode.to)
+
+        const value = valueNode.type === 'id' ? 
+            this.get(valueNode.value, scope)
+            : this.createInstruction(valueNode, scope).execute();
+        
+        console.log(valueNode, scope, value)
         return value
     }
 
@@ -39,12 +49,12 @@ class Instruction {
         return new Instruction(node, scope, this._get, this._set, this._emit)
     }
 
-    getInScope(id) {
-        return this._get(id, this._scope)
+    get(id, scope = this._scope) {
+        return scope[id]
     }
 
-    setInScope(id, value) {
-        return this._set(id, value, this._scope)
+    set(id, value, scope = this._scope) {
+        return scope[id] = value
     }
 
     emit(action, ...args) {

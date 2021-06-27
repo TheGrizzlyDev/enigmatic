@@ -10,8 +10,6 @@ class TestInstruction extends Instruction {
         super(
             astNode, 
             setupScope, 
-            id => this.testScope[id],
-            (id, value) => this.testScope[id] = value,
             (...args) => {
                 this.testEmissions.push(args)
             })
@@ -40,6 +38,29 @@ test("Assign a simple value", () => {
         }
     }, {
         expectedValue
+    })
+
+    victim.execute()
+
+    expect(victim.scope[varName]).toEqual(expectedValue)
+})
+
+test("Assign a scoped value", () => {
+    const varName = 'test'
+    const expectedValue = 42
+    const victim = new TestInstruction({
+        type: 'assign',
+        to: varName,
+        value: {
+            type: 'accessor',
+            to: 'nest',
+            access: {
+                type: 'id',
+                value: 'expectedValue'
+            }
+        }
+    }, {
+        nest: { expectedValue }
     })
 
     victim.execute()
