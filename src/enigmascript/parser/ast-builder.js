@@ -1,5 +1,3 @@
-const lexer = require('./lexer')
-
 module.exports = function(tokens) {
     let i = 0;
     const next = () => tokens[++i]
@@ -9,14 +7,18 @@ module.exports = function(tokens) {
     const reports = []
     const e = msg => {
         console.log("Failed on: ", current())
-        reports.push(`[${current().line}:${current().column}] ${msg.toString().trim()}`) 
+        reports.push({
+            line: current().line,
+            column: current().column,
+            error: msg.toString().trim()
+        }) 
     }
     const parserState = {
         phase: 'setup'
     }
     const state = () => parserState
 
-    function isTokenOrEOF(next, type) {
+    function isTokenOrEOF(type) {
         return ['EOF', type].includes(next().type)
     }
     
@@ -107,7 +109,7 @@ module.exports = function(tokens) {
             rightCoverage.push(r)
             if (! alphabet.includes(r)) {
                 e(`
-                Left side of a rotor connection should contain one of the symbols defined in the alphabet [${alphabet}],
+                Right side of a rotor connection should contain one of the symbols defined in the alphabet [${alphabet}],
                 instead got ${l}
                 `)
             }
@@ -200,7 +202,7 @@ module.exports = function(tokens) {
     }
     
     function* array() {
-        while(! isTokenOrEOF(next, 'array_end')) {
+        while(! isTokenOrEOF('array_end')) {
             yield assinableOp()
         }
     }
@@ -308,7 +310,7 @@ module.exports = function(tokens) {
     const supportedCodeBlockInstructions = { id, for: forloop }
     function block() {
         const instructions = []
-        while (! isTokenOrEOF(next, 'scope_end')) {
+        while (! isTokenOrEOF('scope_end')) {
             const tokenType = current().type
             const op = supportedCodeBlockInstructions[tokenType]
             if (! op) {
@@ -326,9 +328,14 @@ module.exports = function(tokens) {
     function using() {
         const token = current()
         const alphabet = token.value
+        if (alphabet.length % 2 !== 0) 
+            e`
+            The alphabet must have an even number of symbols to be able to properly connect.
+            `
+
         state().alphabet = alphabet
         const instructions = []
-        while(! isTokenOrEOF(next, 'run')) {
+        while(! isTokenOrEOF('run')) {
             if (current().type !== 'id') {
                 e`
                 Expressions in the setup block must be assigned to an identifier to be valid
