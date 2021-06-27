@@ -13,7 +13,10 @@ class Instruction {
     }
 
     invocation() {
-        return this.get(this.astNode.to)()
+        const args = (this.astNode.args || []).map(arg => arg.type === 'id' ? 
+                this.get(valueNode.value)
+                : this.createInstruction(arg).execute())
+        return this.get(this.astNode.to)(...args)
     }
 
     feed() {

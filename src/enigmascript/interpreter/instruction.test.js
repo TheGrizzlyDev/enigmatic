@@ -76,10 +76,17 @@ test("Invocation can invoke a method and assign the result", () => {
         to: varName,
         value: {
             type: 'invocation',
-            to: 'expectedValue'
+            to: 'valueWrapper',
+            args: [
+                {
+                    type: 'invocation',
+                    to: 'expectedValue'
+                }
+            ]
         }
     }, {
-        expectedValue() { return expectedValue }
+        expectedValue() { return expectedValue },
+        valueWrapper(value) { return value }
     })
 
     victim.execute()

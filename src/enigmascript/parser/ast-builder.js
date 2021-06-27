@@ -6,7 +6,6 @@ module.exports = function(tokens) {
     
     const reports = []
     const e = msg => {
-        console.log("Failed on: ", current())
         reports.push({
             line: current().line,
             column: current().column,
@@ -54,8 +53,17 @@ module.exports = function(tokens) {
                 }
             },
             tuple_start() {
-                //TODO only works with empty args at the moment lol
-                if (next().type !== 'tuple_end') {
+                const args = []
+                while (! isTokenOrEOF('tuple_end')) {
+                    if (current().type !== 'id') {
+                        e`
+                        Expected a valid identifier as the argument
+                        `
+                        return
+                    }
+                    args.push(id())
+                }
+                if (current().type !== 'tuple_end') {
                     e`
                     Expected a closing parentheses after an invocation
                     `
@@ -64,6 +72,7 @@ module.exports = function(tokens) {
                 return {
                     type: 'invocation',
                     to: token.value,
+                    args
                 }
             }
         }
@@ -182,10 +191,6 @@ module.exports = function(tokens) {
     
     const instructions = { rotor, plugboard }
     
-    function assinableOp() {
-        
-    }
-    
     function assignment() {
         const token = next()
         const opType = token.type
@@ -218,15 +223,15 @@ module.exports = function(tokens) {
             if (! op) {
                 e(`
                 Did not expect token ${tokenType} during a run block
-                `) //TODO list supported tokens
+                `)
                 continue
             }
             instructions.push(op()) 
         }
-        // return instructions
-        return instructions.filter(instruction => !!instruction)
+        return instructions
     }
     
+    const setupInstructions = { rotor, id, plugboard } 
     function using() {
         const token = current()
         const alphabet = token.value
@@ -239,18 +244,12 @@ module.exports = function(tokens) {
         const instructions = []
         while(! isTokenOrEOF('run')) {
             const tokenType = current().type
-            switch(tokenType) {
-                case 'rotor':
-                    instructions.push(rotor())
-                    break
-                case 'plugboard':
-                    instructions.push(plugboard())
-                    break
-                default:
-                     e(`
-                    Expressions in the setup block must be either rotor or plugboard, instead got: ${tokenType}
-                    `)
-            }
+            const op = setupInstructions[tokenType]
+            if (! op) 
+                e(`
+                Expressions in the setup block must be either rotor or plugboard or be assigned, instead got: ${tokenType}
+                `)
+            instructions.push(op())
         }
         return {
             alphabet,

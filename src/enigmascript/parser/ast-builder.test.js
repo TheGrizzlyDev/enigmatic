@@ -111,7 +111,7 @@ test('Can generate the correct token sequence', () => {
                     "to": "rotors",
                     "access": {
                         "type": "invocation",
-                        "to": "step"
+                        "to": "step",
                     }
                 },
                 {
