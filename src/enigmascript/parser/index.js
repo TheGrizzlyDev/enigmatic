@@ -7,8 +7,8 @@ class ParserError extends Error {
         this.errors = errors
     }
 
-    get top() {
-        return this.errors[0]
+    top(n = 1) {
+        return this.errors.slice(0, Math.min(n, this.errors.length) - 1)
     }
 }
 

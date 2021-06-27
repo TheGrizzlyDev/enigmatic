@@ -15,11 +15,12 @@ class Instruction {
     }
 
     assign() {
-        this.setInScope(this.astNode.to, this.createInstruction(this.astNode.value).execute())
-    }
-
-    array() {
-        return this.astNode.value.map(node => this.createInstruction(node).execute())
+        const valueNode = this.astNode.value
+        const value = valueNode.type === 'id' ? 
+            this.getInScope(valueNode.value)
+            : this.createInstruction(valueNode).execute();
+        this.setInScope(this.astNode.to, value)
+        return value
     }
 
     rotor() {
@@ -49,6 +50,7 @@ class Instruction {
     emit(action, ...args) {
         return this._emit(action, ...args)
     } 
+
 }
 
 module.exports = Instruction
