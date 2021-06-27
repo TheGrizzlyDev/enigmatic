@@ -12,6 +12,10 @@ class Instruction {
         return this[this.astNode.type](...arguments)
     }
 
+    invocation() {
+        return this.get(this.astNode.to)()
+    }
+
     assign() {
         const valueNode = this.astNode.value
         const value = valueNode.type === 'id' ? 
@@ -29,7 +33,6 @@ class Instruction {
             this.get(valueNode.value, scope)
             : this.createInstruction(valueNode, scope).execute();
         
-        console.log(valueNode, scope, value)
         return value
     }
 

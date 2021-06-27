@@ -68,6 +68,25 @@ test("Assign a scoped value", () => {
     expect(victim.scope[varName]).toEqual(expectedValue)
 })
 
+test("Invocation can invoke a method and assign the result", () => {
+    const varName = 'test'
+    const expectedValue = 42
+    const victim = new TestInstruction({
+        type: 'assign',
+        to: varName,
+        value: {
+            type: 'invocation',
+            to: 'expectedValue'
+        }
+    }, {
+        expectedValue() { return expectedValue }
+    })
+
+    victim.execute()
+
+    expect(victim.scope[varName]).toEqual(expectedValue)
+})
+
 test("Consecutive assignments", () => {
     const firstVarName = 'test_0'
     const secondVarName = 'test_1'
@@ -141,3 +160,5 @@ test("Creating a plugboard emits a plugboard action with a plugboard instance", 
 
     expect(instance).toBeInstanceOf(Plugboard)
 })
+
+test("FEED", () => {})
