@@ -8,5 +8,5 @@ plugboard(🔥 <=> 👽️, ✨ <=> 💩)
 run {
     res = plugboard <- rotors <- in
     rotors.step()
-    out <- res
+    out = res
 }

@@ -109,7 +109,7 @@ test('Can generate the correct token sequence', () => {
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'feed'
+        type: 'assignment'
     })
 
     expect(tokens.shift()).toMatchObject({

@@ -115,7 +115,7 @@ test('Can generate the correct token sequence', () => {
                     }
                 },
                 {
-                    "type": "feed",
+                    "type": "assign",
                     "to": "out",
                     "value": {
                         "type": "id",

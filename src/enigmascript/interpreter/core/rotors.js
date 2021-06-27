@@ -3,6 +3,9 @@ class Rotors {
         this.alphabet = alphabet
         this.rotors = rotors
         this.offset = 0
+
+        this.operator_feed = this.operator_feed.bind(this)
+        this.step = this.step.bind(this)
     }
 
     operator_feed(input) {

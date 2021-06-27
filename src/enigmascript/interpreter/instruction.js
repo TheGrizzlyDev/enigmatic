@@ -23,7 +23,6 @@ class Instruction {
             : this.createInstruction(valueNode).execute();
         const scope = this.get(this.astNode.to)
         const operator = this.get('operator_feed', scope)
-
         return operator(value)
     }
 
@@ -59,8 +58,8 @@ class Instruction {
         return plugboard
     }
 
-    createInstruction(node, scope = this.scope) {
-        return new Instruction(node, scope, this._get, this._set, this._emit)
+    createInstruction(node, scope = this._scope) {
+        return new Instruction(node, scope, this._emit)
     }
 
     get(id, scope = this._scope) {

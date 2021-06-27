@@ -37,29 +37,30 @@ class Interpreter {
         const plugboard = (emittedPlugboards && emittedPlugboards.length === 1) && emittedPlugboards[0]
         if (! plugboard) throw new Error("Exactly a single plugboard must be declared for an enigma machine") 
 
-        this.set('plugboard', plugboard)
-        this.set('rotors', new Rotors(this.alphabet, ...emittedRotors))
+        this.global.plugboard = plugboard
+        this.global.rotors = new Rotors(this.alphabet, ...emittedRotors)
     }
 
     run(input) {
-        return [this.computeCurrentState(), []]
-    }
-
-    set(id, value, root = global) {
-        root[id] = value
-    }
-
-    get(id, root = global) {
-        return root[id]
+        this.global.in = input
+        const emit = (action, ...args) => {
+            throw new Error(`action ${action} cannot be emitted`)
+        }
+        for(let instruction of this.ast.run.instructions) {
+            new Instruction(instruction, this.global, emit).execute()
+        }
+        return [this.computeCurrentState(), {
+            out: this.global.out
+        }]
     }
 
     computeCurrentState() {
         return {
             alphabet: this.alphabet,
             plugboard: {
-                value: this.get('plugboard').value
+                value: this.global.plugboard.value
             },
-            rotors: this.get('rotors').rotorsWithState()
+            rotors: this.global.rotors.rotorsWithState()
                 .map(({position, wiring}) => ({ position, wiring }))
         }
     }

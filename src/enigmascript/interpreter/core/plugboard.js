@@ -1,6 +1,8 @@
 class Plugboard {
     constructor(value) {
         this.value = value
+        
+        this.operator_feed = this.operator_feed.bind(this)
     }
 
     operator_feed(value) {
