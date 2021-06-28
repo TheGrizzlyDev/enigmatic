@@ -57,13 +57,13 @@ lexer.rule(/\./, (ctx, match) => {
     ctx.accept("accessor")
 })
 
-lexer.rule(/\/\/[^\r\n]*\r?\n/, (ctx, match) => {
+lexer.rule(/#[^\r\n]*\r?\n/, (ctx, match) => {
     ctx.ignore()
 })
 
 lexer.rule(/[ \t\r\n]+/, (ctx, match) => {
     ctx.ignore()
-})
+}) 
 
 lexer.rule(/./, (ctx, match) => {
     ctx.accept("char", match)

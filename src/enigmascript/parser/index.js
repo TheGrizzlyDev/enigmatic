@@ -6,10 +6,6 @@ class ParserError extends Error {
         super()
         this.errors = errors
     }
-
-    top(n = 1) {
-        return this.errors.slice(0, Math.min(n, this.errors.length) - 1)
-    }
 }
 
 module.exports = function(code) {

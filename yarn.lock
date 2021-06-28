@@ -548,6 +548,13 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@svelte-parts/editor@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@svelte-parts/editor/-/editor-0.0.18.tgz#c61e559a81d42f6c83269623073d73472176032b"
+  integrity sha512-ee9PWg7WaVlenOFTCavpIwes4jKw10caqrQl0lIsPQGxAFZGjvUjt3AnL0aaPyDHK14U0SR44eKSJ6yoRBmQmg==
+  dependencies:
+    codemirror "^5.58.2"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -941,6 +948,11 @@ co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=
+
+codemirror@^5.58.2:
+  version "5.62.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.62.0.tgz#e9ecd012e6f9eaf2e05ff4a449ff750f51619e22"
+  integrity sha512-Xnl3304iCc8nyVZuRkzDVVwc794uc9QNX0UcPGeNic1fbzkSrO4l4GVXho9tRNKBgPYZXgocUqXyfIv3BILhCQ==
 
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
