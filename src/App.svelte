@@ -1,4 +1,5 @@
 <script>
+	import { HSplitPane } from 'svelte-split-pane';
 	import createInterpreter from "./enigmascript";
 	import CodeEditor from "./ui/CodeEditor.svelte";
 
@@ -18,9 +19,19 @@ run {
 }`.trim();
 
 	$: interpreter = createInterpreter(code);
+
 </script>
 
-<CodeEditor bind:code class="editor"/>
+<div class="wrapper">
+	<HSplitPane>
+        <left slot="left">
+            <CodeEditor bind:code/>
+        </left>
+        <right slot="right">
+            Right Pane
+        </right>
+	</HSplitPane>
+</div>
 
 <div class="notifications">
 	{#await interpreter}
@@ -33,15 +44,12 @@ run {
 </div>
 
 <style>
-	:global(.editor) {
-		height: 100%;
-	}
-
 	.notifications {
 		position: fixed;
 		bottom: 0px;
 		left: 0px;
 		width: 100%;
+		z-index: 10000;
 	}
 
 	.loading {
@@ -59,4 +67,12 @@ run {
 		padding: 4px;
 		border-radius: 2px;
 	}
+
+
+	div.wrapper {
+		width: 100%;
+		height: 100%;
+		margin: 0px;
+	}
+
 </style>

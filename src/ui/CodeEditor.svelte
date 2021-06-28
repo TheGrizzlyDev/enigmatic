@@ -17,3 +17,9 @@
     editor.setValue(code)
     editor.on('change', e => code = e.getValue())
 }}/>
+
+<style>
+    :global(.CodeMirror) {
+        height: 100%;
+    }
+</style>
