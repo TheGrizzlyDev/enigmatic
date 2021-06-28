@@ -1,4 +1,6 @@
 <script>
+    import { input, output, alphabet } from '../state/emulator'
+
     // based on https://www.cmu.edu/biolphys/deserno/pdf/log_interpol.pdf
     const logInterpolation = (xMin, xMax, yMin, yMax, current) => {
         const clampedCurrent = Math.min(yMax, Math.max(yMin, current));
@@ -6,11 +8,9 @@
         return Math.floor(Math.pow(xMax, factor) * Math.pow(xMin, 1 - factor));
     };
 
-    const alphabet = ["🔥", "✨", "💩", "👽️"]; //will become part of the ctx
-
     const minFont = 16;
-    const maxFont = 32;
-    $: fontSize = logInterpolation(maxFont, minFont, 4, 26, alphabet.length);
+    const maxFont = 40;
+    $: fontSize = logInterpolation(maxFont, minFont, 4, 26, $alphabet.length);
 
     // Given
     // ratio = Math.round(Math.sqrt(length))
@@ -23,32 +23,32 @@
     // cols^2 = length * 3
     // cols = Math.floor(Math.sqrt(length * Math.round(Math.sqrt(length))))
     $: maxCols = Math.floor(
-        Math.sqrt(alphabet.length * Math.round(Math.sqrt(alphabet.length)))
+        Math.sqrt($alphabet.length * Math.round(Math.sqrt($alphabet.length)))
     );
 
     // given the number of expected cols we calculate the rows
-    $: rows = Math.ceil(alphabet.length / maxCols);
+    $: rows = Math.ceil($alphabet.length / maxCols);
 
     // once we have the rows we recalculate the number of effective cols so we avoid overstacking the last one
-    $: cols = Math.ceil(alphabet.length / rows);
+    $: cols = Math.ceil($alphabet.length / rows);
 
     $: items = new Array(rows)
         .fill()
-        .map((_, row) => alphabet.slice(row * cols, (row + 1) * cols));
+        .map((_, row) => $alphabet.slice(row * cols, (row + 1) * cols));
 
     let highlighted;
-    let clicked;
     let cancelClicked;
-    let output = '🔥' //TODO replace with actual output from the machine
 
     const clickTimeout = 1000;
-    $: {
+    const clearSelections = () => {
         clearTimeout(cancelClicked);
-        cancelClicked = (clicked || output) && setTimeout(() => {
-                clicked = null;
-                output = null;
+        cancelClicked = ($input || $output) && setTimeout(() => {
+            $input = null
+            $output = null
         }, clickTimeout);
     }
+    input.subscribe(clearSelections)
+    output.subscribe(clearSelections)
 </script>
 
 <div class="emulator" style="--font-size: {fontSize}px">
@@ -59,7 +59,7 @@
                 {#each row as item}
                     <span 
                         class="key"
-                        class:clicked={output === item}>{item}</span>
+                        class:clicked={$output === item}>{item}</span>
                 {/each}
             </div>
         {/each}
@@ -72,9 +72,9 @@
                 {#each row as item}
                     <span
                         class="key"
-                        class:clicked={clicked === item}
+                        class:clicked={$input === item}
                         class:highlighted={highlighted === item}
-                        on:click={(_) => (clicked = item)}
+                        on:click={(_) => $input = item}
                         on:mouseenter={(_) => (highlighted = item)}
                         on:mouseleave={(_) => (highlighted = null)}>{item}</span
                     >
@@ -123,11 +123,15 @@
     }
 
     span.key {
-        padding: 1em;
+        width: 2em;
         background: var(--light-color);
+        color: var(--dark-color);
         border-radius: 4em;
         border: 1px solid #aaa;
         margin: 0.5em;
+        height: 2em;
+        text-align: center;
+        line-height: 2em;
     }
 
     span.highlighted {

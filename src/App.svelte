@@ -1,47 +1,26 @@
 <script>
 	import { HSplitPane } from 'svelte-split-pane';
-	import createInterpreter from "./enigmascript";
 	import CodeEditor from "./ui/CodeEditor.svelte";
 	import Emulator from './ui/Emulator.svelte';
-
-	let code = `
-using 🔥, ✨, 💩, 👽️
-
-rotor(🔥 => 💩, ✨ => 🔥, 💩 => 👽️, 👽️ => ✨) starting at 🔥
-# Just a comment
-rotor(🔥 => 🔥, ✨ => 👽️, 💩 => ✨, 👽️ => 💩) starting at ✨
-
-plugboard(🔥 <=> 👽️, ✨ <=> 💩)
-
-run {
-    res = plugboard <- rotors <- in
-    rotors.step()
-    out = res
-}`.trim();
-
-	$: interpreter = createInterpreter(code);
+	import { parsingErrors } from './state/interpreter';
 
 </script>
 
 <div class="wrapper">
 	<HSplitPane>
         <left slot="left">
-            <CodeEditor bind:code/>
+            <CodeEditor/>
         </left>
         <right slot="right">
-            <Emulator />
+            <Emulator/>
         </right>
 	</HSplitPane>
 </div>
 
 <div class="notifications">
-	{#await interpreter}
-	<p class="loading">...loading</p>
-	{:catch errors}
-		{#each errors.errors.slice(0, 3) as error}
-			<p class="error">[{error.line}:{error.column}] {error.error}</p>
-		{/each}
-	{/await}
+	{#each $parsingErrors.slice(0, 3) as error}
+		<p class="error">Parser error: [{error.line}:{error.column}] {error.error}</p>
+	{/each}
 </div>
 
 <style>
