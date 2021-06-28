@@ -17,12 +17,12 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
+    "svelte-split-pane": "^0.1.2",
+    "@svelte-parts/editor": "^0.0.18",
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "@svelte-parts/editor": "^0.0.18",
     "sirv-cli": "^1.0.0",
-    "svelte-split-pane": "^0.1.2",
     "tokenizr": "^1.6.4"
   }
 }

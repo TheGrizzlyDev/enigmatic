@@ -2,6 +2,7 @@
 	import { HSplitPane } from 'svelte-split-pane';
 	import createInterpreter from "./enigmascript";
 	import CodeEditor from "./ui/CodeEditor.svelte";
+	import Emulator from './ui/Emulator.svelte';
 
 	let code = `
 using 🔥, ✨, 💩, 👽️
@@ -28,7 +29,7 @@ run {
             <CodeEditor bind:code/>
         </left>
         <right slot="right">
-            Right Pane
+            <Emulator />
         </right>
 	</HSplitPane>
 </div>
@@ -50,6 +51,7 @@ run {
 		left: 0px;
 		width: 100%;
 		z-index: 10000;
+		background: #202020f0;
 	}
 
 	.loading {
