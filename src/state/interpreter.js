@@ -15,7 +15,12 @@ code.subscribe(value => {
         result.update(_ => null)
         parsingErrors.update(_ => [])
     } catch(e) {
-        parsingErrors.update(_ => e.errors)
+        if (e.errors) {
+            parsingErrors.update(_ => e.errors)
+        }
+        
+        // if there is an e without errors than the lexer has failed
+        // no error bubbling for now, instead keep the previous errors
     }
 })
 code.update(old => old) //forcing a first update to get the interpreter loaded when code has only the original value

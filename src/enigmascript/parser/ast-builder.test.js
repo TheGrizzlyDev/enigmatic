@@ -22,7 +22,7 @@ test('Can generate the correct token sequence', () => {
                 "🔥",
                 "✨",
                 "💩",
-                "👽️"
+                "🐼"
             ],
             "instructions": [
                 {
@@ -40,10 +40,10 @@ test('Can generate the correct token sequence', () => {
                             ],
                             [
                                 "💩",
-                                "👽️"
+                                "🐼"
                             ],
                             [
-                                "👽️",
+                                "🐼",
                                 "✨"
                             ]
                         ]
@@ -52,7 +52,7 @@ test('Can generate the correct token sequence', () => {
                 {
                     "type": "rotor",
                     "value": {
-                        "start": "✨",
+                        "start": "💩",
                         "wiring": [
                             [
                                 "🔥",
@@ -60,14 +60,14 @@ test('Can generate the correct token sequence', () => {
                             ],
                             [
                                 "✨",
-                                "👽️"
+                                "🐼"
                             ],
                             [
                                 "💩",
                                 "✨"
                             ],
                             [
-                                "👽️",
+                                "🐼",
                                 "💩"
                             ]
                         ]
@@ -78,7 +78,7 @@ test('Can generate the correct token sequence', () => {
                     "value": [
                         [
                             "🔥",
-                            "👽️"
+                            "🐼"
                         ],
                         [
                             "✨",

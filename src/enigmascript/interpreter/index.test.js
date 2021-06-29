@@ -10,29 +10,29 @@ test('Can setup and run an enigma-machine', () => {
     const [ state, result ] = interpreter.run('🔥')
 
     expect(state).toMatchObject({
-        alphabet: ['🔥', '✨', '💩', '👽️'],
+        alphabet: ['🔥', '✨', '💩', '🐼'],
         rotors: [
             {
                 position: '✨', // after running once the interpreter steps the rotors and the first one moves from 🔥 to ✨
                 wiring: [
                     ['🔥', '💩'], 
                     ['✨', '🔥'], 
-                    ['💩', '👽️'], 
-                    ['👽️', '✨']
+                    ['💩', '🐼'], 
+                    ['🐼', '✨']
                 ]
             },
             {
-                position: '✨',
+                position: '💩',
                 wiring: [
                     ['🔥', '🔥'], 
-                    ['✨', '👽️'], 
+                    ['✨', '🐼'], 
                     ['💩', '✨'], 
-                    ['👽️', '💩']
+                    ['🐼', '💩']
                 ]
             }
         ],
         plugboard: {
-            value: [['🔥', '👽️'], ['✨', '💩']]
+            value: [['🔥', '🐼'], ['✨', '💩']]
         }
     })
 

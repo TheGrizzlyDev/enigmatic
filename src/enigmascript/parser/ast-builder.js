@@ -17,8 +17,8 @@ module.exports = function(tokens) {
     }
     const state = () => parserState
 
-    function isTokenOrEOF(type) {
-        return ['EOF', type].includes(next().type)
+    function isTokenOrEOF(...types) {
+        return ['EOF', ...types].includes(next().type)
     }
     
     function id() {
@@ -95,7 +95,53 @@ module.exports = function(tokens) {
             `
             return
         }
-        const value = current().value
+        // const value = current().value
+
+        const wiring = []
+        if (! next().type === 'tuple_start') 
+            e(`
+            Expected an open parentheses after declaring a rotor
+            `)
+
+        while(! isTokenOrEOF('tuple_end')) {
+            const left = current()
+            const connect = next()
+            const right = next()
+
+            if (left.type !== 'string')
+                e(`
+                Expected a string in the left side of a rotor connection
+                `)
+            
+            if (connect.type !== 'connect')
+                e(`
+                Expected a connection operator (=>) between the 2 sides of a connection
+                `)
+        
+            if (right.type !== 'string')
+                e(`
+                Expected a string in the right side of a rotor connection
+                `)
+            
+            wiring.push([left.value, right.value])
+
+            if (lookahead().type === 'comma') next()
+        }
+
+        if (next().type !== 'rotor_start') 
+            e`
+            Expected "starting at 'symbol'" after declaring a rotor's connection
+            `
+
+        const startToken = next()
+        if (startToken.type !== 'string')
+            e`
+            Starting point of a rotor must be a valid symbol
+            `
+        const start = startToken.value
+
+        const value = { wiring, start }
+
         const alphabet = state().alphabet
     
         if (! alphabet.includes(value.start))
@@ -244,11 +290,19 @@ module.exports = function(tokens) {
         const instructions = []
         while(! isTokenOrEOF('run')) {
             const tokenType = current().type
-            const op = setupInstructions[tokenType]
-            if (! op) 
-                e(`
-                Expressions in the setup block must be either rotor or plugboard or be assigned, instead got: ${tokenType}
-                `)
+            // TODO add this back after refactoring the plugboard
+            // if (tokenType !== 'id') { 
+            //     e(`
+            //     Expected a valid identifier, instead got: ${tokenType}
+            //     `)
+            // }
+            if (['rotor'].includes(current().value)) {
+                instructions.push(setupInstructions[current().value]())
+                continue
+            }
+
+            const op = setupInstructions[tokenType]                
+
             instructions.push(op())
         }
         return {

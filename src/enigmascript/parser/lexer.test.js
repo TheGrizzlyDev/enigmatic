@@ -3,42 +3,197 @@ const tokenizer = require('./lexer')
 
 test('Can generate the correct token sequence', () => {
     const code = fs.readFileSync('src/enigmascript/testdata/simple.enigmascript', 'utf8')
-    tokens = tokenizer(code)
+    const tokens = tokenizer(code)
 
     expect(tokens.shift()).toMatchObject({
         type: 'using',
-        value: ['🔥', '✨', '💩', '👽️']
+        value: ['🔥', '✨', '💩', '🐼']
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'rotor',
-        value: {
-            start: '🔥',
-            wiring: [
-                ['🔥', '💩'], 
-                ['✨', '🔥'], 
-                ['💩', '👽️'], 
-                ['👽️', '✨']
-            ]
-        }
+        type: 'id',
+        value: 'rotor'
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'rotor',
-        value: {
-            start: '✨',
-            wiring: [
-                ['🔥', '🔥'], 
-                ['✨', '👽️'], 
-                ['💩', '✨'], 
-                ['👽️', '💩']
-            ]
-        }
+        type: 'tuple_start',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🔥'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '💩'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '✨'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🔥'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '💩'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🐼'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🐼'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '✨'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_end',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'rotor_start',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🔥'
+    })
+
+    // rotor('🔥' => '🔥', '✨' => '🐼', '💩' => '✨', '🐼' => '💩') starting at '💩'
+    expect(tokens.shift()).toMatchObject({
+        type: 'id',
+        value: 'rotor'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_start',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🔥'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🔥'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '✨'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🐼'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '💩'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '✨'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🐼'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'connect',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '💩'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_end',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'rotor_start',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '💩'
     })
 
     expect(tokens.shift()).toMatchObject({
         type: 'plugboard',
-        value: [['🔥', '👽️'], ['✨', '💩']]
+        value: [['🔥', '🐼'], ['✨', '💩']]
     })
 
     expect(tokens.shift()).toMatchObject({

@@ -6,13 +6,8 @@ lexer.rule(/using ((?:.\,?)+)/, (ctx, match) => {
     ctx.accept("using", match[1].split(',').map(symbol => symbol.trim()))
 })
 
-lexer.rule(/rotor\((.+,?)*\) starting at (.+)/, (ctx, match) => {
-    ctx.accept("rotor", {
-        start: match[2],
-        wiring: match[1].split(',')
-            .map(connectionStatement => 
-                connectionStatement.split('=>').map(symbol => symbol.trim()))
-    })
+lexer.rule(/starting at/, (ctx) => {
+    ctx.accept("rotor_start")
 })
 
 lexer.rule(/plugboard\((.+,?)*\)/, (ctx, match) => {
@@ -27,6 +22,18 @@ lexer.rule(/run/, (ctx, match) => {
 
 lexer.rule(/[a-zA-Z_][a-zA-Z0-9_]*/, (ctx, match) => {
     ctx.accept("id")
+})
+
+lexer.rule(/,/, (ctx) => {
+    ctx.accept("comma")
+})
+
+lexer.rule(/=>/, (ctx, match) => {
+    ctx.accept("connect")
+})
+
+lexer.rule(/<=>/, (ctx, match) => {
+    ctx.accept("bind")
 })
 
 lexer.rule(/=/, (ctx, match) => {
@@ -65,8 +72,8 @@ lexer.rule(/[ \t\r\n]+/, (ctx, match) => {
     ctx.ignore()
 }) 
 
-lexer.rule(/./, (ctx, match) => {
-    ctx.accept("char", match)
+lexer.rule(/("|')(.)\1/u, (ctx, match) => {
+    ctx.accept("string", match[2])
 })
 
 
