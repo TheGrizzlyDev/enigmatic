@@ -16,9 +16,11 @@
         })
         code.subscribe(value => {
             if (! value) return
+            if (value === editor.getValue()) return //just a normal update, not a file change 
             editor.setValue(value)
         })
     }
+
 </script>
 
 <CodeMirror {config} {accessEditor}/>

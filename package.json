@@ -23,7 +23,9 @@
     "svelte-split-pane": "^0.1.2"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "sirv-cli": "^1.0.0",
+    "svelte-fa": "^2.2.1",
     "tokenizr": "^1.6.4"
   }
 }

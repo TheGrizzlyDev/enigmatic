@@ -1,9 +1,21 @@
 import { code } from "./code";
 import createInterpreter from "../enigmascript";
 import { writable } from "svelte/store";
+import { addError } from "./notification"
 
-//TODO create a notification mechanism for errors
-export const parsingErrors = writable([])
+const parsingErrors = writable([])
+const interpreterNotificationHandlers = writable([])
+parsingErrors.subscribe(errors => {
+    const newNotifications = errors.map(error => addError({
+        notifier: 'Parser',
+        msg: `[${error.line}:${error.column}] ${error.error}`
+    }))
+    interpreterNotificationHandlers.update(oldNotifications => {
+        for(let { close } of oldNotifications) close()
+        return newNotifications
+    })
+})
+
 export const state = writable()
 export const result = writable()
 

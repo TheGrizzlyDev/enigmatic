@@ -8,6 +8,11 @@ export const alphabet = readable([], set => {
         set(alphabet)
     })
 })
+export const rotorsPositions = readable([], set => {
+    state.subscribe(({ rotors }) => {
+        set(rotors.map(({ position }) => position))
+    })
+})
 
 input.subscribe(run)
 

@@ -1,5 +1,5 @@
 <script>
-    import { input, output, alphabet } from '../state/emulator'
+    import { input, output, alphabet, rotorsPositions } from '../state/emulator'
 
     // based on https://www.cmu.edu/biolphys/deserno/pdf/log_interpol.pdf
     const logInterpolation = (xMin, xMax, yMin, yMax, current) => {
@@ -8,8 +8,8 @@
         return Math.floor(Math.pow(xMax, factor) * Math.pow(xMin, 1 - factor));
     };
 
-    const minFont = 16;
-    const maxFont = 40;
+    const minFont = 8;
+    const maxFont = 32;
     $: fontSize = logInterpolation(maxFont, minFont, 4, 26, $alphabet.length);
 
     // Given
@@ -63,6 +63,15 @@
                 {/each}
             </div>
         {/each}
+    </div>
+
+    <div class="container rotors">
+        <div class="section-title">Rotors' positions</div>
+        <div class="row">
+            {#each $rotorsPositions.reverse() as positon}
+                <span class="key">{positon}</span>
+            {/each}
+        </div>
     </div>
 
     <div class="container keyboard">
