@@ -52,7 +52,6 @@
 </script>
 
 <div class="emulator" style="--font-size: {fontSize}px">
-    <img class="logo" src="logo.svg" alt="Enigma logo" />
     <div class="container display">
         <div class="section-title">OUT</div>
         {#each items as row}
