@@ -1,20 +1,25 @@
 <script>
     import { notifications } from "../state/notification";
     import Fa from "svelte-fa";
-    import { faTimesCircle, faExclamationTriangle, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+    import {
+        faTimesCircle,
+        faExclamationTriangle,
+        faInfoCircle,
+    } from "@fortawesome/free-solid-svg-icons";
 
     const iconFor = (notification) =>
         ({
             error: faTimesCircle,
             warn: faExclamationTriangle,
-            info: faInfoCircle
+            info: faInfoCircle,
         }[notification.level]);
 </script>
 
 <div class="notifications">
-    {#each $notifications.slice(0, 5) as notification}
+    {#each $notifications.slice(0, 3) as notification}
         <p class="notification {notification.level}">
-            <Fa icon={iconFor(notification)} /> {notification.notifier}: {notification.msg}
+            <Fa icon={iconFor(notification)} />
+            {notification.notifier}: {notification.msg}
         </p>
     {/each}
 </div>
@@ -26,7 +31,7 @@
         left: 0px;
         width: 100%;
         z-index: 10000;
-    background: linear-gradient(0deg, #999f 50%, transparent);
+        background: linear-gradient(0deg, #999f 50%, transparent);
     }
 
     .notification {

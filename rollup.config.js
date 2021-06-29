@@ -72,7 +72,7 @@ export default {
 		production && terser(),
 		string({
 			include: "**/*.enigmascript"
-		})
+		}),
 	],
 	watch: {
 		clearScreen: false

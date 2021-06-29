@@ -8,7 +8,7 @@
         return Math.floor(Math.pow(xMax, factor) * Math.pow(xMin, 1 - factor));
     };
 
-    const minFont = 8;
+    const minFont = 16;
     const maxFont = 32;
     $: fontSize = logInterpolation(maxFont, minFont, 4, 26, $alphabet.length);
 
@@ -52,6 +52,7 @@
 </script>
 
 <div class="emulator" style="--font-size: {fontSize}px">
+    <img class="logo" src="logo.svg" alt="Enigma logo" />
     <div class="container display">
         <div class="section-title">OUT</div>
         {#each items as row}
@@ -105,6 +106,10 @@
         justify-content: space-evenly;
         background: var(--dark-color);
         color: var(--light-color);
+    }
+
+    .logo {
+        max-height: 80px;
     }
 
     div.section-title {
