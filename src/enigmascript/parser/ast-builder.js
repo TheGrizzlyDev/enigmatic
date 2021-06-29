@@ -196,7 +196,38 @@ module.exports = function(tokens) {
             `
             return
         }
-        const value = current().value
+        const value = []
+
+        if (! next().type === 'tuple_start') 
+            e(`
+            Expected an open parentheses after declaring a plugboard
+            `)
+
+        while(! isTokenOrEOF('tuple_end')) {
+            const left = current()
+            const bind = next()
+            const right = next()
+
+            if (left.type !== 'string')
+                e(`
+                Expected a string in the left side of a plugboard connection
+                `)
+            
+            if (bind.type !== 'bind')
+                e(`
+                Expected a binding operator (<=>) between the 2 sides of a connection
+                `)
+        
+            if (right.type !== 'string')
+                e(`
+                Expected a string in the right side of a plugboard connection
+                `)
+            
+            value.push([left.value, right.value])
+
+            if (lookahead().type === 'comma') next()
+        }
+
         const alphabet = state().alphabet
     
         const coveredSymbols = []
@@ -277,7 +308,7 @@ module.exports = function(tokens) {
         return instructions
     }
     
-    const setupInstructions = { rotor, id, plugboard } 
+    const setupInstructions = { rotor, plugboard } 
     function using() {
         const token = current()
         const alphabet = token.value
@@ -290,20 +321,20 @@ module.exports = function(tokens) {
         const instructions = []
         while(! isTokenOrEOF('run')) {
             const tokenType = current().type
-            // TODO add this back after refactoring the plugboard
-            // if (tokenType !== 'id') { 
-            //     e(`
-            //     Expected a valid identifier, instead got: ${tokenType}
-            //     `)
-            // }
-            if (['rotor'].includes(current().value)) {
-                instructions.push(setupInstructions[current().value]())
-                continue
+            if (tokenType !== 'id') { 
+                e(`
+                Expected a valid identifier, instead got: ${tokenType}
+                `)
             }
 
-            const op = setupInstructions[tokenType]                
+            const op = setupInstructions[current().value]   
+            
+            if (op) {
+                instructions.push(op())
+            } else {
+                instructions.push(id())
+            }
 
-            instructions.push(op())
         }
         return {
             alphabet,

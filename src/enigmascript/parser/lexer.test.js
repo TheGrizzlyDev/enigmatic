@@ -192,8 +192,48 @@ test('Can generate the correct token sequence', () => {
     })
 
     expect(tokens.shift()).toMatchObject({
-        type: 'plugboard',
-        value: [['🔥', '🐼'], ['✨', '💩']]
+        type: 'id',
+        value: 'plugboard'
+    })
+    
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_start',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🔥'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'bind',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '🐼'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'comma',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '✨'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'bind',
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'string',
+        value: '💩'
+    })
+
+    expect(tokens.shift()).toMatchObject({
+        type: 'tuple_end',
     })
 
     expect(tokens.shift()).toMatchObject({

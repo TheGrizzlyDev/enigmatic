@@ -6,14 +6,8 @@ lexer.rule(/using ((?:.\,?)+)/, (ctx, match) => {
     ctx.accept("using", match[1].split(',').map(symbol => symbol.trim()))
 })
 
-lexer.rule(/starting at/, (ctx) => {
+lexer.rule(/starting at/, (ctx) => { //TODO eventually replacewith well known ids or a symbol like bind or connect
     ctx.accept("rotor_start")
-})
-
-lexer.rule(/plugboard\((.+,?)*\)/, (ctx, match) => {
-    ctx.accept("plugboard", match[1].split(',')
-        .map(connectionStatement => 
-            connectionStatement.split('<=>').map(symbol => symbol.trim())))
 })
 
 lexer.rule(/run/, (ctx, match) => {
