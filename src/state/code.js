@@ -1,16 +1,11 @@
 import { writable } from 'svelte/store';
+import emojiEnigma from '../examples/emoji.enigmascript';
+import boolEnigma from '../examples/bool.enigmascript';
 
-export const code = writable(`
-using 🔥, ✨, 💩, 🐼
+const files = { emoji: emojiEnigma, bool: boolEnigma }
 
-rotor('🔥' => '💩', '✨' => '🔥', '💩' => '🐼', '🐼' => '✨') starting at '🔥' # Just an inline comment
-rotor('🔥' => '🔥', '✨' => '🐼', '💩' => '✨', '🐼' => '💩') starting at '💩'
+export const code = writable(emojiEnigma)
 
-# Just a comment
-plugboard('🔥' <=> '🐼', '✨' <=> '💩')
-
-run {
-    res = plugboard <- rotors <- in
-    rotors.step()
-    out = res
-}`.trim())
+export function changeFile(filename) {
+    code.update(_ => files[filename])
+}

@@ -2,7 +2,7 @@ const fs = require('fs')
 const tokenizer = require('./lexer')
 
 test('Can generate the correct token sequence', () => {
-    const code = fs.readFileSync('src/enigmascript/testdata/simple.enigmascript', 'utf8')
+    const code = fs.readFileSync('src/examples/emoji.enigmascript', 'utf8')
     const tokens = tokenizer(code)
 
     expect(tokens.shift()).toMatchObject({
@@ -100,7 +100,6 @@ test('Can generate the correct token sequence', () => {
         value: '🔥'
     })
 
-    // rotor('🔥' => '🔥', '✨' => '🐼', '💩' => '✨', '🐼' => '💩') starting at '💩'
     expect(tokens.shift()).toMatchObject({
         type: 'id',
         value: 'rotor'

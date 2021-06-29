@@ -8,7 +8,7 @@ function dump(ast, testCase) {
 }
 
 test('Can generate the correct token sequence', () => {
-    const code = fs.readFileSync('src/enigmascript/testdata/simple.enigmascript', 'utf8')
+    const code = fs.readFileSync('src/examples/emoji.enigmascript', 'utf8')
     tokens = tokenizer(code)
 
     const [ast, errors] = astBuilder(tokens)

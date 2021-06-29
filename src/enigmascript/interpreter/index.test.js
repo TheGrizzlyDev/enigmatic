@@ -3,7 +3,7 @@ const parser = require('../parser')
 const Interpreter = require('./index')
 
 test('Can setup and run an enigma-machine', () => {
-    const code = fs.readFileSync('src/enigmascript/testdata/simple.enigmascript', 'utf8')
+    const code = fs.readFileSync('src/examples/emoji.enigmascript', 'utf8')
     const ast = parser(code)
     const interpreter = new Interpreter(ast)
     interpreter.init()

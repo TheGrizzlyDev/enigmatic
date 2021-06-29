@@ -10,15 +10,18 @@
         theme: "md-dark"
     };
 
-    const handleOnChange = e => {
-        code.update(_ => e.getValue())
+    const accessEditor = editor => {
+        editor.on('change', e => {
+            code.update(_ => e.getValue())
+        })
+        code.subscribe(value => {
+            if (! value) return
+            editor.setValue(value)
+        })
     }
 </script>
 
-<CodeMirror {config} accessEditor={editor => {
-    editor.setValue($code)
-    editor.on('change', handleOnChange)
-}}/>
+<CodeMirror {config} {accessEditor}/>
 
 <style>
     :global(.CodeMirror) {

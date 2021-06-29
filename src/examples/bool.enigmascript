@@ -1,0 +1,13 @@
+using ✅, ❌
+
+rotor('✅' => '❌', '❌' => '✅') starting at '✅'
+rotor('✅' => '✅', '❌' => '❌') starting at '❌'
+rotor('✅' => '❌', '❌' => '✅') starting at '❌'
+
+plugboard('✅' <=> '❌')
+
+run {
+    res = plugboard <- rotors <- in
+    rotors.step()
+    out = res
+}

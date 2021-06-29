@@ -11,15 +11,16 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "@svelte-parts/editor": "^0.0.18",
     "jest": "^27.0.5",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte-split-pane": "^0.1.2",
-    "@svelte-parts/editor": "^0.0.18",
-    "svelte": "^3.0.0"
+    "svelte": "^3.0.0",
+    "svelte-split-pane": "^0.1.2"
   },
   "dependencies": {
     "sirv-cli": "^1.0.0",
