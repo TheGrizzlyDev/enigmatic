@@ -68,7 +68,7 @@
     <div class="container rotors">
         <div class="section-title">Rotors' positions</div>
         <div class="row">
-            {#each $rotorsPositions.reverse() as positon}
+            {#each $rotorsPositions as positon}
                 <span class="key">{positon}</span>
             {/each}
         </div>

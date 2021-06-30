@@ -1,10 +1,6 @@
-- Add support for comments
-- Add support for keyboard layouts
-- Split tokens in using, rotor and plugboard
-- Add arguments to function invocation
 - Create a standard library with audio
-- Create more examples
-- Create a state manager in svelte
 - Create a POC UI
-- Add an execution plan with the other returned values so we can display step by step
+- Implement proper turnovers (?) maybe programmable (?)
+- Create a reflector and make it invertable
 - Bubble up symbol locations so we can show the code bound to a specific step of the plan
+- Add an execution plan with the other returned values so we can display step by step
